@@ -1,0 +1,28 @@
+group 'fnManager'
+version '1.0'
+
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath group: 'org.hibernate', name: 'hibernate-core', version: '3.6.7.Final'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.0.5"
+        classpath "junit:junit:4.12"
+    }
+}
+
+apply plugin: "kotlin"
+
+subprojects {
+    apply plugin: "kotlin"
+    sourceSets {
+        main.kotlin.srcDirs += 'src/main/kotlin'
+    }
+    dependencies {
+        compile("org.jetbrains.kotlin:kotlin-gradle-plugin:1.0.5")
+        compile("junit:junit:4.12")
+//        compile(project(':utils'))
+    }
+}

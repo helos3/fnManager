@@ -1,0 +1,6 @@
+include 'utils', 'account-service'
+rootProject.name = 'root'
+rootProject.properties.put("kotlin_version", '1.0.6')
+rootProject.properties.put("junit_version", '4.12')
+
+
