@@ -9,6 +9,7 @@ buildscript {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.0.6"
     }
 }
+apply plugin: "kotlin"
 
 
 subprojects {
@@ -20,7 +21,7 @@ subprojects {
 //        compile(project(':utils'))
     }
     sourceSets {
-        main.kotlin.srcDirs += 'src/main/kotlin'
+        main.java.srcDirs += 'src/main/kotlin'
     }
 
 }
