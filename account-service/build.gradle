@@ -17,6 +17,9 @@ apply plugin: "io.spring.dependency-management"
 
 repositories {
     mavenCentral()
+    maven {
+        url  "http://dl.bintray.com/kotlin/exposed"
+    }
 }
 
 dependencyManagement {
@@ -27,6 +30,7 @@ dependencyManagement {
 
 dependencies {
     compile 'com.github.salomonbrys.kodein:kodein:3.1.0'
-//    compile 'org.jetbrains.exposed:exposed:0.7.6'
+    compile 'org.jetbrains.exposed:exposed:0.7.6'
+    //as bintray is not working, i just took the jar
     compile 'org.springframework.cloud:spring-cloud-config-server:1.2.2.RELEASE'
 }
