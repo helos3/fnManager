@@ -17,6 +17,8 @@ subprojects {
     dependencies {
         compile "org.jetbrains.kotlin:kotlin-gradle-plugin:1.0.6"
         compile "junit:junit:4.12"
+        compile 'com.h2database:h2:1.4.193'
+        compile 'postgresql:postgresql:9.1-901.jdbc4'
         compile "org.jetbrains.kotlin:kotlin-stdlib:1.0.6"
 //        compile(project(':utils'))
     }
