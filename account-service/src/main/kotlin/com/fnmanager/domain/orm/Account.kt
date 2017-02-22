@@ -1,10 +1,9 @@
 package com.fnmanager.domain.orm
 
-import org.jetbrains.exposed.dao.Entity
-import org.jetbrains.exposed.dao.EntityClass
-import org.jetbrains.exposed.dao.EntityID
-import org.jetbrains.exposed.dao.IdTable
+import org.jetbrains.exposed.dao.*
+import org.jetbrains.exposed.sql.StdOutSqlLogger
 import org.jetbrains.exposed.sql.Table
+import org.jetbrains.exposed.sql.Transaction
 
 /**
  * Created by rushan on 2/19/2017.
@@ -17,10 +16,29 @@ object Accounts : IdTable<String>("money_account") {
 
 }
 
-class Account(username: EntityID<String>) : Entity<String>(username) {
-    companion object : EntityClass<String, Account>(Accounts)
+//class Account(username: EntityID<String>) : Entity<String>(username) {
+//    companion object : EntityClass<String, Account>(Accounts)
+//    var user by User referencedOn Accounts.id
+//    var notes by Accounts.notes
+//    var incomes by Item referrersOn Items.account
+////    var incomes by  Item.backReferencedOn(Items.account)
+//}
 
-    var user by User referencedOn Accounts.id
-    var notes by Accounts.notes
+
+fun <T> Transaction.eval(transactionBody: () -> T) {
+
+    logger.addLogger(StdOutSqlLogger())
+    try {
+        transactionBody.invoke()
+    } catch (e: Exception) {
+        rollback()
+    }
+    commit()
+    close()
+
+Account.new {
+//    incomes
 }
 
+
+}

@@ -4,7 +4,12 @@ version '1.0'
 buildscript {
     repositories {
         jcenter()
+        maven {
+            url  "http://dl.bintray.com/kotlin/exposed"
+        }
+
     }
+
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.0.6"
     }
@@ -20,11 +25,16 @@ subprojects {
         compile 'com.h2database:h2:1.4.193'
         compile 'postgresql:postgresql:9.1-901.jdbc4'
         compile "org.jetbrains.kotlin:kotlin-stdlib:1.0.6"
+        compile 'org.jetbrains.exposed:exposed:0.7.6'
+
 //        compile(project(':utils'))
     }
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
+        main.allSource.srcDirs.each { it.mkdirs() }
+//        .each { abc -> abc.mkdirs() }
+
+        //.each {it.mkdirs()}
     }
 
 }
-
