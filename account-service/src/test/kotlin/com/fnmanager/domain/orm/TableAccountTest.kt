@@ -1,6 +1,7 @@
 package com.fnmanager.domain.orm
 
 import com.fnmanager.domain.orm.Accounts
+import com.fnmanager.domain.orm.Accounts.notes
 import com.fnmanager.domain.orm.User
 import com.fnmanager.domain.orm.Users
 import com.fnmanager.domain.orm.Users.password
@@ -46,6 +47,7 @@ class TableAccountTest {
 
     @Test fun insertStatement() {
         TransactionManager.currentOrNew(1).eval {
+            initSchema.invoke()
             var peter = User.new("peter", {
                 password = "someverydumbpass"
             })
@@ -53,9 +55,43 @@ class TableAccountTest {
             var ivan = User.new("ivan", {
                 password = "somedumbdayuff"
             })
-            assertTrue { User.all().count { true } == 2 }
+            assertTrue { User.all().count() == 2 }
+
+            val ivanAccount = Account.new(ivan.id.value, {
+
+                notes = "blablabla"
+            })
+
+            Item.new {
+                account = ivanAccount
+                name = "idk"
+                type = ItemType.DAILY
+                amount = 5000
+            }
+
+            Item.new {
+                account = ivanAccount
+                name = "qwe"
+                type = ItemType.DAILY
+                amount = 5000
+            }
+
+            Item.new {
+                account = ivanAccount
+                name = "asd"
+                type = ItemType.DAILY
+                amount = 5000
+            }
+            assertTrue { ivanAccount.incomesAndOutcomes.count() == 3}
+            ivanAccount.incomesAndOutcomes.toList().forEach { println(it.toString()) }
+            println(ivanAccount.toString())
+            println(ivan.id.value)
+//            println(ivanAccount.user.id.value)
+
         }
+
+
+
     }
 
-//    @RunWith()
 }

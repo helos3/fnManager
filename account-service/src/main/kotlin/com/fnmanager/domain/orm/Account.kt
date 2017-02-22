@@ -1,9 +1,13 @@
 package com.fnmanager.domain.orm
 
 import org.jetbrains.exposed.dao.*
+import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.StdOutSqlLogger
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.Transaction
+import org.jetbrains.kotlin.utils.addToStdlib.check
+import org.jetbrains.kotlin.utils.addToStdlib.singletonOrEmptyList
+import java.util.*
 
 /**
  * Created by rushan on 2/19/2017.
@@ -13,32 +17,29 @@ object Accounts : IdTable<String>("money_account") {
     val notes = varchar("notes", 20000)
     override val id = varchar("username", 20).entityId().references(Users.id)
 
-
 }
 
-//class Account(username: EntityID<String>) : Entity<String>(username) {
-//    companion object : EntityClass<String, Account>(Accounts)
-//    var user by User referencedOn Accounts.id
-//    var notes by Accounts.notes
-//    var incomes by Item referrersOn Items.account
-////    var incomes by  Item.backReferencedOn(Items.account)
-//}
+class Account(username: EntityID<String>) : Entity<String>(username) {
+    companion object : EntityClass<String, Account>(Accounts)
+
+    var user by User referencedOn Accounts.id
+    var notes by Accounts.notes
+    val incomesAndOutcomes by Item referrersOn Items.account
+
+    override fun toString(): String = "User: ${id.value}, " +
+            "incomes and outcomes: ${incomesAndOutcomes.map { "\n\t$it" }.reduce { s1, s2 -> s1 + s2 }}, " +
+            "notes: $notes"
+
+    override fun hashCode(): Int = user.hashCode() + notes.hashCode()
+}
 
 
-fun <T> Transaction.eval(transactionBody: () -> T) {
+fun <T:Any> Transaction.eval(transactionBody: () -> T) {
 
     logger.addLogger(StdOutSqlLogger())
-    try {
-        transactionBody.invoke()
-    } catch (e: Exception) {
-        rollback()
-    }
-    commit()
-    close()
-
-Account.new {
-//    incomes
-}
-
-
+    Exceptional.of { transactionBody.invoke() }
+            .on(false, { rollback() })
+            .on(true, { commit() })
+            .peek { close() }
+            .orElseThrow()
 }
