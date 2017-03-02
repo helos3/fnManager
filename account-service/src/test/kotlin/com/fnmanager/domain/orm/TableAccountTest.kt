@@ -82,7 +82,21 @@ class TableAccountTest {
                 type = ItemType.DAILY
                 amount = 5000
             }
-            assertTrue { ivanAccount.incomesAndOutcomes.count() == 3}
+            Item.create{
+                account = ivanAccount
+                name = "asssssss"
+                type = ItemType.DAILY
+                amount = 5000
+            }
+            val temp = Item.create{
+                account = ivanAccount
+                name = "daym"
+                type = ItemType.DAILY
+                amount = 5000
+            }
+            temp.name = "pidor"
+
+            assertTrue { ivanAccount.incomesAndOutcomes.count() == 5}
             ivanAccount.incomesAndOutcomes.toList().forEach { println(it.toString()) }
             println(ivanAccount.toString())
             println(ivan.id.value)

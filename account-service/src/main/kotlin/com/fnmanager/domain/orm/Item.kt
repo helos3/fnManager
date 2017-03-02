@@ -2,12 +2,12 @@ package com.fnmanager.domain.orm
 
 import org.apache.catalina.realm.X509SubjectDnRetriever
 import org.jetbrains.exposed.dao.*
-import org.jetbrains.exposed.sql.Column
-import org.jetbrains.exposed.sql.ReferenceOption
-import org.jetbrains.exposed.sql.Table
+import org.jetbrains.exposed.sql.*
 import org.jetbrains.kotlin.utils.addToStdlib.check
+import org.jetbrains.kotlin.utils.sure
 
 import java.util.*
+import kotlin.reflect.KProperty
 
 /**
  * Created by rushan on 2/15/2017.
@@ -29,12 +29,24 @@ object Items : IdTable<String>("item") {
 }
 
 class Item(id: EntityID<String>) : Entity<String>(id) {
-    companion object : EntityClass<String, Item>(Items)
+    companion object : EntityClass<String, Item>(Items) {
+        fun create(init: Item.() -> Unit) : Item {
+
+//            fun a() = new(init)
+//            a().name="huy"
+            val item = new(init)
+            item.name="huy"
+            return item
+        }
+    }
 
     var account by Account referencedOn Items.account
     var name by Items.name
     var type by Items.type
     var amount by Items.amount
+
+    fun abc() : Item = new("adsa", {})
+
 
 
     override fun toString(): String =
@@ -42,5 +54,6 @@ class Item(id: EntityID<String>) : Entity<String>(id) {
 
 
     override fun hashCode(): Int = 42 + account.hashCode() + name.hashCode() + amount.hashCode() + type.hashCode()
+
 }
 

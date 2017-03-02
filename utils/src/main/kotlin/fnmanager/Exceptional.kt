@@ -1,4 +1,4 @@
-package com.fnmanager.domain.orm
+package fnmanager
 
 
 /**

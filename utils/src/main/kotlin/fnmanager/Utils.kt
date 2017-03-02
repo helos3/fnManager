@@ -1,4 +1,4 @@
-package com.fnmanager
+package fnmanager
 
 /**
  * Created by rushan on 2/22/2017.

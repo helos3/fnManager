@@ -15,6 +15,7 @@ buildscript {
 }
 
 apply plugin: "io.spring.dependency-management"
+apply plugin: 'spring-boot'
 
 repositories {
     jcenter()
@@ -29,4 +30,5 @@ dependencyManagement {
 dependencies {
     compile 'org.springframework.cloud:spring-cloud-starter-config'
     compile 'org.springframework.cloud:spring-cloud-config-server:1.2.2.RELEASE'
+    compile 'org.springframework.boot:spring-boot-starter-security:1.4.3.RELEASE'
 }
