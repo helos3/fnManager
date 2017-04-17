@@ -4,18 +4,19 @@ package fnmanager
 /**
  * exception + optional
  */
-class Exceptional<T> {
+class Exceptional<T : Any> {
     companion object {
-        fun <T> of(statement: () -> T) : Exceptional<T> {
-            return Exceptional<T>(statement).exec()
+        fun <T : Any> of(statement: () -> T) : Exceptional<T> {
+            return Exceptional<T>(statement)
         }
     }
 
     constructor(statement: () -> T) {
         this.statement = statement
+        exec()
     }
 
-    constructor(isSuccess: Boolean, exception: Exception) {
+    internal constructor(isSuccess: Boolean, exception: Exception) {
         this.isSuccess = isSuccess
         this.exception = exception
     }
@@ -24,28 +25,27 @@ class Exceptional<T> {
     internal var isSuccess = true
     internal lateinit var exception : Exception
     internal lateinit var statement : () -> T
+    internal lateinit var result : T
 
-    fun exec() : Exceptional<T> {
-
+    internal fun exec() : Exceptional<T> {
         try {
-            statement.invoke()
+            result = statement.invoke()
         } catch (e: Exception) {
             isSuccess = false
-            exception = exception
+            exception = e
         }
         return this
     }
 
-    fun <A> map(statement: (T) -> A) : Exceptional<A> {
-        exec()
+    fun <A:Any> map(statement: (T) -> A) : Exceptional<A> {
         return if (isSuccess)
-            Exceptional.of { statement.invoke(this.statement.invoke()) }
+            Exceptional.of { statement.invoke(result) }
         else
             Exceptional(false, this.exception)
     }
 
     fun <B> on(isSuccess: Boolean, statement: () -> B) : Exceptional<T> {
-        if (isSuccess and isSuccess)
+        if (this.isSuccess and isSuccess)
             statement.invoke()
         return this
     }
@@ -55,11 +55,10 @@ class Exceptional<T> {
         return this
     }
 
-
     fun orElseThrow() : T {
         if (!isSuccess)
             throw exception
-        return statement.invoke()
+        return result
     }
 
 

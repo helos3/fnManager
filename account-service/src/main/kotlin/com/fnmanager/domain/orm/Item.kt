@@ -1,6 +1,5 @@
 package com.fnmanager.domain.orm
 
-import org.apache.catalina.realm.X509SubjectDnRetriever
 import org.jetbrains.exposed.dao.*
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.kotlin.utils.addToStdlib.check

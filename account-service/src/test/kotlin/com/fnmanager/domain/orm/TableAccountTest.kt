@@ -1,5 +1,6 @@
 package com.fnmanager.domain.orm
 
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fnmanager.domain.orm.Accounts
 import com.fnmanager.domain.orm.Accounts.notes
 import com.fnmanager.domain.orm.User
@@ -44,13 +45,24 @@ class TableAccountTest {
         create(Users, Accounts, Items)
     }
 
-
-    @Test fun insertStatement() {
-        TransactionManager.currentOrNew(1).eval {
+    @Test fun gsonTest() {
+        transaction {
             initSchema.invoke()
             var peter = User.new("peter", {
                 password = "someverydumbpass"
             })
+            print(peter.abc().toJson(peter))
+        }
+    }
+
+    @Test fun insertStatement() {
+
+        transaction {
+            initSchema.invoke()
+            var peter = User.new("peter", {
+                password = "someverydumbpass"
+            })
+
 
             var ivan = User.new("ivan", {
                 password = "somedumbdayuff"
@@ -96,11 +108,14 @@ class TableAccountTest {
             }
             temp.name = "pidor"
 
+
             assertTrue { ivanAccount.incomesAndOutcomes.count() == 5}
             ivanAccount.incomesAndOutcomes.toList().forEach { println(it.toString()) }
             println(ivanAccount.toString())
             println(ivan.id.value)
-//            println(ivanAccount.user.id.value)
+
+
+
 
         }
 

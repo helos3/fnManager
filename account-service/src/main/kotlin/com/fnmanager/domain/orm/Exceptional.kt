@@ -16,6 +16,7 @@ class Exceptional<T : Any> {
         exec()
     }
 
+
     internal constructor(isSuccess: Boolean, exception: Exception) {
         this.isSuccess = isSuccess
         this.exception = exception
@@ -54,7 +55,6 @@ class Exceptional<T : Any> {
         statement.invoke()
         return this
     }
-
 
     fun orElseThrow() : T {
         if (!isSuccess)

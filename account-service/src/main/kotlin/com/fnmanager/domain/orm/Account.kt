@@ -1,5 +1,10 @@
 package com.fnmanager.domain.orm
 
+import com.github.salomonbrys.kotson.jsonDeserializer
+import com.github.salomonbrys.kotson.*
+import com.google.gson.GsonBuilder
+import com.google.gson.TypeAdapter
+import feign.Feign
 import org.jetbrains.exposed.dao.*
 import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.StdOutSqlLogger
@@ -31,8 +36,19 @@ class Account(username: EntityID<String>) : Entity<String>(username) {
             "notes: $notes"
 
     override fun hashCode(): Int = user.hashCode() + notes.hashCode()
+
+
+
 }
 
+fun abc() {
+//Feign.builder().decoder()
+    GsonBuilder().registerTypeAdapter<Account> {
+        serialize {
+            jsonObject()
+        }
+    }
+}
 
 fun <T:Any> Transaction.eval(transactionBody: () -> T) {
 
@@ -43,3 +59,5 @@ fun <T:Any> Transaction.eval(transactionBody: () -> T) {
             .peek { close() }
             .orElseThrow()
 }
+
+
