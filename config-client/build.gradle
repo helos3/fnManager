@@ -1,0 +1,15 @@
+group 'fnManager'
+version '1.0'
+
+repositories {
+    mavenCentral()
+}
+
+
+dependencies {
+    compile 'com.sparkjava:spark-core:2.5'
+    compile 'com.netflix.feign:feign-gson:8.18.0'
+    compile 'com.netflix.feign:feign-okhttp:8.18.0'
+    compile 'com.github.salomonbrys.kotson:kotson:2.5.0'
+    //as bintray is not working, i just took the jar
+}
