@@ -1,3 +1,5 @@
+package com.fnmanager
+
 import com.ecwid.consul.v1.health.model.HealthService
 import com.github.salomonbrys.kotson.jsonObject
 import com.github.salomonbrys.kotson.obj

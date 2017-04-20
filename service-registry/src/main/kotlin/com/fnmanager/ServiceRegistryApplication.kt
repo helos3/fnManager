@@ -1,3 +1,5 @@
+package com.fnmanager
+
 import com.ecwid.consul.v1.ConsulClient
 import com.ecwid.consul.v1.QueryParams
 import com.ecwid.consul.v1.agent.model.NewService

@@ -1,6 +1,5 @@
 package com.fnmanager.domain.orm
 
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fnmanager.domain.orm.Accounts
 import com.fnmanager.domain.orm.Accounts.notes
 import com.fnmanager.domain.orm.User
@@ -51,7 +50,7 @@ class TableAccountTest {
             var peter = User.new("peter", {
                 password = "someverydumbpass"
             })
-            print(peter.abc().toJson(peter))
+            print(peter.gson().toJson(peter))
         }
     }
 

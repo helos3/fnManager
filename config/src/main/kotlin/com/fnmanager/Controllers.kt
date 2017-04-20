@@ -1,5 +1,6 @@
 package com.fnmanager
 
+import com.github.salomonbrys.kotson.jsonArray
 import com.github.salomonbrys.kotson.jsonObject
 import com.natpryce.konfig.Configuration
 import com.natpryce.konfig.ConfigurationMap
@@ -25,13 +26,21 @@ fun registerControllers() {
     path("/configuration") {
         get("/:serviceName") { req, res ->
             val response = PropertiesRepository.find(req.params("serviceName"))
-                    .takeIf { it.list().isNotEmpty() }
-                    ?.list()
-                    ?.map { it.second }
-                    ?.fold(mutableMapOf<String, String>()) {res, map -> res.putAll(map); res}
-            ?: mapOf<String, String>()
-            if (response.isEmpty()) jsonObject("error" to "no configuration found")
-            else jsonObject(response.entries.map { it.key to it.value })
+                .takeIf { it.list().isNotEmpty() }
+                ?.list()
+                ?.map { it.second }
+                ?.fold(mutableMapOf<String, String>()) { res, map -> res.putAll(map); res }
+                ?: mapOf<String, String>()
+
+
+            jsonObject("error" to "no configuration found")
+                .takeIf { response.isEmpty() } ?:
+                jsonObject("properties" to
+                    jsonArray(response.entries.map {
+                        jsonObject("key" to it.key, "value" to it.value).asString
+                    }).asString)
+
+
         }
     }
 }

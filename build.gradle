@@ -1,6 +1,12 @@
 group 'fnManager'
 version '1.0'
 
+List microservices = [
+        'account-service',
+        'service-regfistry',
+
+]
+
 buildscript {
     repositories {
         jcenter()
@@ -12,6 +18,7 @@ buildscript {
 }
 apply plugin: "kotlin"
 
+microservices.each { dependencies{ compile(project(':config-client'))} }
 
 subprojects {
     apply plugin: "kotlin"
@@ -21,10 +28,11 @@ subprojects {
         compile 'com.h2database:h2:1.4.193'
         compile 'postgresql:postgresql:9.1-901.jdbc4'
         compile "org.jetbrains.kotlin:kotlin-stdlib:1.1.1"
-//        compile(project(':utils'))
+//        compile "org.jetbrains.kotlin:kotlin-test-junit:1.1.1"
     }
     sourceSets {
         main.kotlin.srcDirs += 'src/main/kotlin'
+        main.kotlin.srcDirs += 'src/test/kotlin'
         main.allSource.srcDirs.each { it.mkdirs() }
 //        .each { abc -> abc.mkdirs() }
 

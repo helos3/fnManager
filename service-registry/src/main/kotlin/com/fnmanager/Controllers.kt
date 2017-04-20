@@ -1,3 +1,5 @@
+package com.fnmanager
+
 /**
  * Created by berlogic on 18.04.17.
  */

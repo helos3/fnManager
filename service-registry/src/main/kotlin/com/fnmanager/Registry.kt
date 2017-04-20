@@ -1,3 +1,5 @@
+package com.fnmanager
+
 import com.ecwid.consul.v1.ConsulClient
 import com.ecwid.consul.v1.QueryParams
 import com.ecwid.consul.v1.agent.model.NewService
@@ -21,6 +23,7 @@ object Registry {
         service.tags = tags
         service.port = port?.toInt() ?: return null
 
+
         val check = NewService.Check()
         check.script = "ping -c1 ${service.address}:${service.port}"
         check.interval = "30"
@@ -30,8 +33,8 @@ object Registry {
         return service
     }
 
-    fun discover(serviceName: String?, tags: List<String>): List<HealthService> {
-        return if (tags.isEmpty())
+    fun discover(serviceName: String?, tags: List<String>): List<HealthService> =
+        if (tags.isEmpty())
             client.getHealthServices(serviceName, true, QueryParams.DEFAULT)?.value ?: emptyList()
         else
             tags
@@ -39,6 +42,6 @@ object Registry {
                     .filter { it.value.size > 0 }
                     .map { it.value }
                     .fold(mutableListOf()) { list1, list2 -> list1.addAll(list2); list1 }
-    }
+
 
 }
