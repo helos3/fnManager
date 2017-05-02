@@ -10,6 +10,7 @@ import com.fnmanager.config.MicroserviceConfig
 object ConfigApp {
     fun main(args: Array<String>) {
         MicroserviceConfig("application")
+        registerControllers()
 
     }
 
