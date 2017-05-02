@@ -6,6 +6,7 @@ import com.github.salomonbrys.kotson.obj
 import com.github.salomonbrys.kotson.registerTypeAdapter
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonElement
+import com.orbitz.consul.model.health.ServiceHealth
 
 fun JsonElement.toMap() = obj.entrySet().map { it.key to it.value.asString }.toMap()
 
@@ -15,9 +16,16 @@ fun toMapGson() = GsonBuilder()
         .create()
 
 fun HealthService.toJson() =
-        jsonObject("address" to service.address,
-                "port" to service.port,
-                "name" to service.service,
-                "id" to service.id,
-                "tags" to service.tags.fold("") { res, str -> "$res,$str" })
+    jsonObject("address" to service.address,
+        "port" to service.port,
+        "name" to service.service,
+        "id" to service.id,
+        "tags" to service.tags.fold("") { res, str -> "$res,$str" })
+
+fun ServiceHealth.toJson() =
+    jsonObject("address" to service.address,
+        "port" to service.port,
+        "name" to service.service,
+        "id" to service.id,
+        "tags" to service.tags.fold("") { res, str -> "$res,$str" })
 

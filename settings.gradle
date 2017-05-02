@@ -5,4 +5,6 @@ rootProject.properties.put("junit_version", '4.12')
 include 'config'
 include 'config-client'
 include 'service-registry'
+include 'service-registry-client'
+include 'auth-service'
 

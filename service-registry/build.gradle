@@ -3,13 +3,18 @@ version '1.0'
 
 repositories {
     mavenCentral()
+    maven {
+        url  "http://dl.bintray.com/"
+    }
 }
 
 
 dependencies {
+    compile 'com.orbitz.consul:consul-client:0.14.0'
     compile 'com.sparkjava:spark-core:2.5.4'
     compile 'com.github.salomonbrys.kotson:kotson:2.5.0'
     compile 'com.ecwid.consul:consul-api:1.2.2'
     compile 'com.github.salomonbrys.kotson:kotson:2.5.0'
     compile 'org.slf4j:slf4j-simple:1.7.25'
+    testCompile project(':service-registry-client')
 }

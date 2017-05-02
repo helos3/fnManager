@@ -27,7 +27,8 @@ subprojects {
         compile "junit:junit:4.12"
         compile 'com.h2database:h2:1.4.193'
         compile 'postgresql:postgresql:9.1-901.jdbc4'
-        compile "org.jetbrains.kotlin:kotlin-stdlib:1.1.1"
+        compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:1.1.1"
+
 //        compile "org.jetbrains.kotlin:kotlin-test-junit:1.1.1"
     }
     sourceSets {

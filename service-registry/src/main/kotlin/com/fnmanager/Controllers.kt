@@ -22,9 +22,9 @@ fun registerControllers() {
             val params: Map<String, String> = toMapGson().fromJson(req.body())
             val created = Registry.register(
                     params["name"],
-                    params["address"],
+                req.ip(),
                     params["tags"]?.split(",") ?: emptyList(),
-                    params["port"]
+                req.port().toString()
             )
             val returnMsg = created?.let {
                 """ Service with name ${it.name}
