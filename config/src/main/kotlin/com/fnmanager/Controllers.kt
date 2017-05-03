@@ -23,24 +23,10 @@ import kotlin.reflect.KProperty
  */
 
 fun registerControllers() {
+    val gson by lazy { gson() }
     path("/configuration") {
-        get("/:serviceName") { req, res ->
-            val response = PropertiesRepository.find(req.params("serviceName"))
-                .takeIf { it.list().isNotEmpty() }
-                ?.list()
-                ?.map { it.second }
-                ?.fold(mutableMapOf<String, String>()) { res, map -> res.putAll(map); res }
-                ?: mapOf<String, String>()
-
-
-            jsonObject("error" to "no configuration found")
-                .takeIf { response.isEmpty() } ?:
-                jsonObject("properties" to
-                    jsonArray(response.entries.map {
-                        jsonObject("key" to it.key, "value" to it.value).asString
-                    }).asString)
-
-
-        }
+        get("/:serviceName", { req, res ->
+            PropertiesRepository.find(req.params("serviceName"))
+        }, gson::toJson)
     }
 }

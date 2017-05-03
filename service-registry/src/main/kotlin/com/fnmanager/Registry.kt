@@ -18,8 +18,9 @@ import java.util.concurrent.locks.ReentrantLock
 /**
  * Created by berlogic on 19.04.17.
  */
+//TODO: add cache and synchronized on cache updating
 object Registry {
-    //TODO: add tags updating
+
     internal val consul = Consul.builder().build()
     internal val locks = ConcurrentHashMap<String, ReentrantLock>()
 
@@ -44,7 +45,7 @@ object Registry {
 
         synchronized(registration.name) {
             consul.agentClient().register(registration)
-            Thread.sleep(10000)
+            Thread.sleep(10000) //wait until 1st check is done
         }
 
         return registration

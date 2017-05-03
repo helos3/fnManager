@@ -45,6 +45,7 @@ internal interface Registry {
                 GsonDecoder(GsonBuilder()
                     .registerTypeAdapter<List<ServiceData>> {
                         deserialize {
+                            it.json.obj["error"]?.let { listOf<ServiceData>() } ?:
                             it.json.obj["found services"].array.map {
                                 ServiceData.gsonAdapter().fromJsonTree(it)
                             }

@@ -1,9 +1,6 @@
 package com.fnmanager.config
 
-import com.github.salomonbrys.kotson.array
-import com.github.salomonbrys.kotson.get
-import com.github.salomonbrys.kotson.obj
-import com.github.salomonbrys.kotson.registerTypeAdapter
+import com.github.salomonbrys.kotson.*
 import com.google.gson.GsonBuilder
 import com.natpryce.konfig.*
 import feign.Feign
@@ -92,9 +89,10 @@ internal interface Config {
             .decoder(GsonDecoder(GsonBuilder()
                 .registerTypeAdapter<Map<String, String>> {
                     deserialize {
-                        it.json.obj["properties"].array
-                            .map { it["key"].asString to it["value"].asString }
-                            .toMap()
+                        it.json.obj["error"]?.let { mapOf<String, String>() } ?:
+                            it.json.asJsonObject.toMap()
+                                .map { it.key to it.value.asString }
+                                .toMap()
                     }
                 }
                 .create()))

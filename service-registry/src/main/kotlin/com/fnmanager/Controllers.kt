@@ -17,37 +17,38 @@ import java.util.*
 
 fun registerControllers() {
 
+    val gson by lazy { gson() }
+
     path("/registry") {
         post("/register", { req, res ->
-            val params: Map<String, String> = toMapGson().fromJson(req.body())
+            val params: Map<String, String> = gson().fromJson(req.body())
             val created = Registry.register(
-                    params["name"],
+                params["name"],
                 req.ip(),
-                    params["tags"]?.split(",") ?: emptyList(),
+                params["tags"]?.split(",") ?: emptyList(),
                 req.port().toString()
             )
-            val returnMsg = created?.let {
+
+            created?.let {
+                res.status(400)
                 """ Service with name ${it.name}
                     registered on
                     address ${it.address}:${it.port} """
-            } ?: "Error creating service"
-            res.status(200)
-            jsonObject("message" to returnMsg).toString()
-        })
+            } ?: {
+                res.status(400)
+                "Error creating service"
+            }
+        }, gson::toJson)
 
         get("/:serviceName", { req, res ->
 
             val services = Registry.discover(
-                    req.params("serviceName"),
-                    req.queryParams("tags")?.split(":") ?: emptyList()
+                req.params("serviceName"),
+                req.queryParams("tags")?.split(":") ?: emptyList()
             )
 
             res.status(200)
-
-            if (services.isEmpty()) jsonObject("Error" to "No services found").toString()
-            else jsonObject(
-                    "found services" to jsonArray(
-                            services.map { it.toJson().toString() })).toString()
-        })
+            services
+        }, gson::toJson)
     }
 }
