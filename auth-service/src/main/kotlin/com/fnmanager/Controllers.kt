@@ -1,4 +1,4 @@
-package com.fnmanager.orm
+package com.fnmanager
 
 import spark.Request
 import spark.Response
@@ -7,14 +7,34 @@ import spark.Spark
 import spark.Spark.*
 import java.util.*
 
-val auth = {req : Request, res : Response ->
-    req.headers("Authorization")
-    ""
+internal val service = UserService()
+
+fun abc() {
+    Spark.get("", ::auth)
 }
 
-val register = {req : Request, res : Response -> ""}
+fun auth(req: Request, res: Response) : String {
+    val auth = req.headers("Authorization") ?: return {
+        res.status(400)
+        "No authorization header"
+    }.invoke()
 
-val login = {req : Request, res : Response -> ""}
+    return if (auth.contains("Basic"))
+         service.auth(Credentials.from(auth.split(" ")[1])) ?: "Failed to authenticate with credentials"
+    else if (auth.contains("Token")) {
+        val token = auth.split(" ")[1]
+        if (service.auth(token)) token else "Failed to authenticate with token"
+    }
+    else { res.status(400); "Invalid authorization header" }
+
+}
+
+
+val register = { req : Request, res : Response -> ""}
+
+val login = { req : Request, res : Response -> ""}
+
+
 
 
 //var serveLoginPage = { request: Request, response: Response ->

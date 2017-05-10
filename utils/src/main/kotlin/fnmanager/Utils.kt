@@ -6,7 +6,7 @@ package fnmanager
 //fun <T> Transaction.eval(transactionBody: () -> T) {
 //
 //    logger.addLogger(StdOutSqlLogger())
-//    com.fnmanager.domain.orm.Exceptional.of { transactionBody.invoke() }
+//    com.fnmanager.domain.domain.Exceptional.of { transactionBody.invoke() }
 //            .on(false, { rollback() })
 //            .on(true, { commit() })
 //            .peek { close() }
