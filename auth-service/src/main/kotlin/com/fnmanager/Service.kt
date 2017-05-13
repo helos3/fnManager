@@ -1,21 +1,20 @@
 package com.fnmanager
 
 import com.fnmanager.domain.User
-import com.google.common.cache.CacheBuilder
-import com.google.common.collect.BiMap
-import com.google.common.collect.Maps
-import org.h2.mvstore.MVMap
-import org.jetbrains.kotlin.com.intellij.util.containers.BidirectionalMap
-import space.traversal.kapsule.Injects
-import spark.Request
-import sun.security.util.Password
+import org.jetbrains.exposed.sql.transactions.transaction
 import java.security.SecureRandom
 
-class UserService {
+interface IUserService {
+    fun auth(cred: Credentials): String?
+    fun register(cred: Credentials): User
+    fun auth(token: String): Boolean
+}
+
+class UserService : IUserService {
 
     internal val tokenStore by lazy { TokenStore() }
 
-    fun auth(cred: Credentials): String? {
+    override fun auth(cred: Credentials): String? {
         val found = User.findById(cred.login)?.takeIf {
             encodeWithSalt(
                 cred.password.toByteArray(Charsets.UTF_8),
@@ -32,7 +31,7 @@ class UserService {
         }.invoke()
     }
 
-    fun register(cred: Credentials): User = User.create(cred.login, cred.password)
+    override fun register(cred: Credentials): User = transaction { User.create(cred.login, cred.password) }
 
-    fun auth(token: String): Boolean = tokenStore.isPresent(token)
+    override fun auth(token: String): Boolean = tokenStore.isPresent(token)
 }

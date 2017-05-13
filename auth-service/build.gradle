@@ -21,7 +21,7 @@ dependencies {
     compile 'com.netflix.feign:feign-okhttp:8.18.0'
     compile 'com.netflix.feign:feign-slf4j:8.18.0'
     compile 'com.github.salomonbrys.kotson:kotson:2.5.0'
-    compile 'org.jetbrains.exposed:exposed:0.7.6'
+    compile 'org.jetbrains.exposed:exposed:0.8'
     compile 'space.traversal.kapsule:kapsule-core:0.2'
     compile 'com.google.guava:guava:21.0'
     compile project(':config-client')

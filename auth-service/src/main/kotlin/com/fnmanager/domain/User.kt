@@ -22,7 +22,7 @@ import java.util.*
 
 
 object Users : IdTable<String>("account") {
-    override val id = varchar("username", 20).entityId()
+    override val id = varchar("login", 20).entityId()
     val password = varchar("password", 255)
     val salt = varchar("salt", 255)
 }
@@ -35,6 +35,7 @@ class User(username: EntityID<String>) : Entity<String>(username) {
                 val seed = randomBytes(32)
                 salt = encodeBase64(seed)
                 this.password = encodeWithSalt(password.toByteArray(Charsets.UTF_8), seed)
+                LoginEntry.create(this)
             }
         }
     }

@@ -65,7 +65,7 @@ internal class RemotePropertiesDelegate(address: String, serviceName: String,
 internal class LocalPropertiesDelegate(fileName: String?,
                                        private var config: Configuration? = null) {
     init {
-        fileName?.let { File("$it.properties") }
+        fileName?.let(::File)
             ?.takeIf { it.isFile }
             ?.let {
                 fixedRateTimer(name = "${it.name}-file-updater", initialDelay = 0, period = 60000) {
