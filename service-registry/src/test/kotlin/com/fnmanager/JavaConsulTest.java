@@ -4,13 +4,13 @@ import com.orbitz.consul.Consul;
 import com.orbitz.consul.model.agent.ImmutableRegCheck;
 import com.orbitz.consul.model.agent.ImmutableRegistration;
 import com.orbitz.consul.model.agent.Registration;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.UUID;
 
 public class JavaConsulTest {
 
-    @Test
     public void test() {
         String id = UUID.randomUUID().toString();
         Consul cl = Consul.builder().build();

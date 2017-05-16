@@ -1,4 +1,4 @@
-package com.fnmanager.utils
+package com.fnmanager
 
 import com.fnmanager.config.IMicroserviceConfig
 import com.fnmanager.config.MicroserviceConfig
@@ -10,7 +10,7 @@ import spark.Spark.port
 val config : IMicroserviceConfig = MicroserviceConfig("application.properties")
 
 fun main(args: Array<String>) {
-    config.loadIntProperty("server.port")?.let { Spark.port(it) }
+    config.loadIntProperty("server.port")?.let(::port)
 
     Spark.post( "/register",    RegisterController())
     Spark.get(  "/login",       AuthController())

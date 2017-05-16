@@ -10,22 +10,27 @@ import space.traversal.kapsule.Injects
 import spark.Request
 import spark.Response
 
-abstract class Controller<T> : spark.Route, Injects<T>
+abstract class Controller<T, R> : spark.Route, Injects<T> {
+    abstract fun _handle(req: Request, res: Response): ControllerResult<R>
 
-class RegisterController : Controller<UserModule>() {
+    override fun handle(req: Request, res: Response): ControllerResult<R> = _handle(req, res).apply(res)
+
+}
+
+class RegisterController : Controller<UserModule, String>() {
     val userService by required { loginService }
 
-    override fun handle(req: Request, res: Response): ControllerResult<String> {
+    override fun _handle(req: Request, res: Response): ControllerResult<String> {
         val cred = Credentials.fromJson(req.body())
         userService.register(cred)
         return success(userService.auth(cred)!!, 200)
     }
 }
 
-class AuthController : Controller<UserModule>() {
+class AuthController : Controller<UserModule, String>() {
     val userService by required { loginService }
 
-    override fun handle(req: Request, res: Response): ControllerResult<String> {
+    override fun _handle(req: Request, res: Response): ControllerResult<String> {
         val auth = req.headers("Authorization") ?: return {
             res.status(400)
             result<String> {

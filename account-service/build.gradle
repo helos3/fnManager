@@ -27,7 +27,7 @@ dependencies {
     compile 'com.netflix.feign:feign-slf4j:8.18.0'
     compile 'com.github.salomonbrys.kotson:kotson:2.5.0'
     compile 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.8.5'
-    compile 'org.jetbrains.exposed:exposed:0.7.6'
+    compile 'org.jetbrains.exposed:exposed:0.8'
     compile project(':config-client')
 
     //as bintray is not working, i just took the jar
